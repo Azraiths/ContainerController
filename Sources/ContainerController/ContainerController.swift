@@ -39,6 +39,12 @@ open class ContainerController: NSObject {
     
     public var oldMoveType: ContainerMoveType = .hide
     
+    public var allowTopDebounce: Bool = true
+    
+    public var allowBottomDebounce: Bool = true
+    
+    public var springTreshold: CGFloat = 40
+    
     // MARK: - Properties Scroll
     
     private var oldTransform: CGAffineTransform = .identity
@@ -483,6 +489,21 @@ open class ContainerController: NSObject {
             let from: ContainerFromType = .pan
             let animation = false
             
+            if position < positionTop,
+               positionTop - position >= springTreshold,
+               !allowTopDebounce {
+                gesture.state = .ended
+                return
+            }
+            
+            if position > positionBottom,
+               position - positionBottom >= springTreshold,
+               !allowBottomDebounce {
+                gesture.state = .ended
+                return
+            }
+            
+            delegate?.move(self, position: position, type: type)
             changeView(transform: transform)
             shadowLevelAlpha(position: position, animation: false)
             changeFooterView(position: position)
@@ -687,7 +708,7 @@ open class ContainerController: NSObject {
             
             if position < positionTop { /// <<< (70 Top)
                 
-                if 750 < velocity {
+                if springTreshold < velocity {
                     type = .bottom /// ↓↓↓
                 } else {
                     type = .top /// Default
@@ -695,7 +716,7 @@ open class ContainerController: NSObject {
                 
             } else if position > positionBottom { /// (300 Bottom) >>>
                 
-                if velocity < -750 {
+                if velocity < -springTreshold {
                     type = .top /// ↑↑↑
                 } else {
                     type = .bottom /// Default
@@ -709,7 +730,7 @@ open class ContainerController: NSObject {
                 
                 if position < centerTopBottom { /// ↑↑↑
                     
-                    if 150 < velocity {
+                    if springTreshold * 1.5 < velocity {
                         type = .bottom
                     } else {
                         type = .top /// Default
@@ -717,7 +738,7 @@ open class ContainerController: NSObject {
                     
                 } else { /// ↓↓↓
                     
-                    if velocity < -150 {
+                    if velocity < -springTreshold * 1.5 {
                         type = .top
                     } else {
                         type = .bottom /// Default
