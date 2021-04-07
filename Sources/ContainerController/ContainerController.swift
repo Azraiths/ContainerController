@@ -609,6 +609,8 @@ open class ContainerController: NSObject {
         scrollView.frame = CGRect(x: 0, y: headerHeight, width: width, height: height)
         scrollView.scrollIndicatorInsets = UIEdgeInsets(top: indicatorTop , left: 0, bottom: indicatorBottom, right: 0)
         scrollView.contentInset = UIEdgeInsets(top: top, left: 0, bottom: bottom, right: 0)
+        
+        delegate?.scrollViewHeightDidChange(height: height)
     }
     
     // MARK: - Position-Type From Velocity

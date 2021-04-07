@@ -22,6 +22,8 @@ public protocol ContainerControllerDelegate {
     
     func move(_ containerController: ContainerController, position: CGFloat, type: ContainerMoveType)
     
+    func scrollViewHeightDidChange(height: CGFloat)
+    
 }
 
 @available(iOS 13.0, *)
@@ -38,6 +40,10 @@ public extension ContainerControllerDelegate {
     }
     
     func move(_ containerController: ContainerController, position: CGFloat, type: ContainerMoveType) {
+        
+    }
+    
+    func scrollViewHeightDidChange(height: CGFloat) {
         
     }
 
