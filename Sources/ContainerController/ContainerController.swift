@@ -47,6 +47,8 @@ open class ContainerController: NSObject {
     
     // MARK: - Properties Scroll
     
+    public var scrollViewFrame: CGRect = .zero
+    
     private var oldTransform: CGAffineTransform = .identity
     
     private var oldPosition: CGFloat = 0.0
@@ -70,6 +72,7 @@ open class ContainerController: NSObject {
     private var scrollStartPosition: CGFloat = 0.0
     
     private var scrollTransform = CGAffineTransform.identity
+    
     
     // MARK: - Properties Position
         
@@ -504,12 +507,13 @@ open class ContainerController: NSObject {
             }
             
             delegate?.move(self, position: position, type: type)
+
             changeView(transform: transform)
             shadowLevelAlpha(position: position, animation: false)
             changeFooterView(position: position)
             calculationScrollViewHeight(from: from)
             changeMove(position: position, type: type, animation: animation)
-            
+
         case .ended:
             
             let velocityY = gesture.velocity(in: view).y
@@ -609,8 +613,7 @@ open class ContainerController: NSObject {
         scrollView.frame = CGRect(x: 0, y: headerHeight, width: width, height: height)
         scrollView.scrollIndicatorInsets = UIEdgeInsets(top: indicatorTop , left: 0, bottom: indicatorBottom, right: 0)
         scrollView.contentInset = UIEdgeInsets(top: top, left: 0, bottom: bottom, right: 0)
-        
-        delegate?.scrollViewHeightDidChange(height: height)
+        scrollViewFrame = scrollView.frame
     }
     
     // MARK: - Position-Type From Velocity
