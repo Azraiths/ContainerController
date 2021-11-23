@@ -25,6 +25,8 @@ open class ContainerController: NSObject {
     
     public var footerView: UIView?
     
+    public var ignoreRotationChange: Bool = false
+    
     // MARK: Layout
     
     public var layout: ContainerLayout = ContainerLayout()
@@ -219,6 +221,10 @@ open class ContainerController: NSObject {
     // MARK: - Rotated
     
     @objc func rotated() {
+        
+        if ignoreRotationChange {
+            return 
+        }
         
         let orint = UIDevice.current.orientation
         if orint == .faceUp || orint == .faceDown || orint == .portraitUpsideDown { return }
