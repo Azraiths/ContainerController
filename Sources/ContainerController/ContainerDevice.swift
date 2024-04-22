@@ -72,7 +72,7 @@ open class ContainerDevice {
     // MARK: - Orientation
     
     class public var isPortrait: Bool {
-        
+        return true
         var portrait: Bool = false
         
         let size: CGSize = UIScreen.main.bounds.size

@@ -93,7 +93,7 @@ open class ContainerController: NSObject {
     }
     
     private var isPortrait: Bool {
-        return ContainerDevice.isPortrait
+        return ignoreRotationChange ? true : ContainerDevice.isPortrait
     }
     
     private var deviceHeight: CGFloat {
